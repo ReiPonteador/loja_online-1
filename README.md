@@ -12,7 +12,7 @@
 ## 🎯 Objetivo
 Desenvolver uma aplicação simples de loja online que integra:
 - Um banco de dados relacional (**MySQL**) para lojas, produtos e características.
-- Um banco NoSQL (**MongoDB Atlas**) para avaliações de produtos e logs de navegação.
+- Um banco NoSQL (**MongoDB Atlas**) para armazenar **características flexíveis dos produtos** (como cor, tamanho, voltagem, material, etc.) e avaliações.
 - Uma interface web em **PHP** que exibe produtos e seus estoques dinâmicos.
 
 Este projeto demonstra como usar diferentes tipos de bancos de dados conforme a natureza dos dados.
@@ -34,20 +34,31 @@ Este projeto demonstra como usar diferentes tipos de bancos de dados conforme a 
 
 ### Estrutura das Tabelas
 ```sql
--- Tabela: Produto
---- tipo (enum: Novo, Usado, Liquidacao, Promocao, Outros)
---- categoria (set: Eletronico, Telefonia, Informatica, Eletrodomesticos, Acessorios, Outros)
---- desconto para produtos usados (decimal)
-produto (id, nome, descricao, preco, tipo, categoria, data_de_lancamento, desconto)
+-- Tabela: produto
+id (INT, PK), nome (VARCHAR), descricao (VARCHAR), preco (DECIMAL), tipo (ENUM: Novo, Usado, Liquidacao, Promocao, Outros), categoria (SET: Eletronico, Telefonia, Informatica, Eletrodomesticos, Acessorios, Outros), data_de_lancamento (DATE), desconto (DECIMAL)
 
--- Características do Produto
-caracteristica (id, nome, descricao)
+-- Tabela: caracteristica
+id (INT, PK), nome (VARCHAR), descricao (VARCHAR)
 
--- Relação entre os produtos e suas respectivas características
-produto_caracteristica (id, id_prodtudo, id_caracteristica)
+-- Tabela: produto_caracteristica
+id (INT, PK), id_prodtudo (INT), id_caracteristica (INT)
 
--- Loja
-loja (id, nome, telefone, rua, numero, bairro, cep, complemento, cidade)
+-- Tabela: loja
+id (INT, PK), nome (VARCHAR), telefone (VARCHAR), rua (VARCHAR), numero (INT), bairro (VARCHAR), cep (VARCHAR), complemento (VARCHAR), cidade(VARCHAR)
 
--- Estoque
-estoque (id, id_produto, id_loja, quantidade_disponivel)
+-- Tabela: estoque
+id (INT, PK), id_produto (INT), id_loja (INT), quantidade_disponivel (INT)
+
+---
+
+## 💻 Aplicação PHP
+### Funcionalidades
+- Recebe o id do aluno pela URL (ex: painel_aluno.php?id=1)
+- Busca os dados principais no MySQL
+- Busca o histórico no MongoDB
+- Exibe tudo integrado em uma página web
+
+### Como Executar
+- Inicie o Apache e MySQL no XAMPP.
+- Coloque os arquivos de loja_online na pasta htdocs.
+- Acesse no navegador: http://localhost/loja_online
